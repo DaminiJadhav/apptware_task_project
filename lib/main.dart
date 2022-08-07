@@ -67,3 +67,8 @@ class _MyAppState extends State<MyApp> {
 
 // https://github.com/DaminiJadhav/apptware_task_project
 
+// - Display list of data on screen using mock API (including Pagination)
+// - Display detailed data on another screen when I click on single data
+// - Make use of FCM with topics
+// - Animated splash screen (any)
+// - Application must work offline
