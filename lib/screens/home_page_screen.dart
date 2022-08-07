@@ -5,11 +5,9 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:cloud_functions/cloud_functions.dart';
 import 'package:api_cache_manager/api_cache_manager.dart';
 import '../firebase/push_notification_manager.dart';
 import 'package:api_cache_manager/models/cache_db_model.dart';
-import 'package:api_cache_manager/utils/cache_db_helper.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -20,6 +18,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _baseuserUrl = 'https://randomuser.me/api/';
+  ScrollController _controller=new ScrollController();
+  ScrollController scrollController=new ScrollController();
 
   String token="";
   String deviceToken="";
@@ -32,40 +32,39 @@ class _HomePageState extends State<HomePage> {
   bool _isFirstLoadRunning = false;
   bool _isLoadMoreRunning = false;
   List _posts = [];
+  List<Result>? results=[];
+
   final postUrl = 'https://fcm.googleapis.com/fcm/send';
   PushNotificationManager pushNotificationManager=new PushNotificationManager();
 
 
-  /*Future<UserDetailResponse?>*/void _firstLoad() async {
+  Future<UserDetailResponse?> _firstLoad() async {
     setState(() {
       _isFirstLoadRunning = true;
     });
-    // var isCacheExist=await APICacheManager().isAPICacheKeyExist("USER_API");
+    var isCacheExist=await APICacheManager().isAPICacheKeyExist("USER_API");
 
-    // if(!isCacheExist){
+    if(!isCacheExist){
       try {
         final res =
-        // await http.get(Uri.parse("$_baseUrl?_page=$_page&_limit=$_limit"));
         await http.get(Uri.parse("$_baseuserUrl?page=$_page&results=$_limit"));
         print("$_baseuserUrl?page=$_page&results=$_limit");
 
         var resBody = json.decode(res.body);
        print("not Cache");
         if(res.statusCode==200){
-          // APICacheDBModel cacheDBModel=new APICacheDBModel(
-          //   key:"USER_API",
-          //   syncData:res.body
-          // );
-          //
-          // await APICacheManager().addCacheData(cacheDBModel);
+          APICacheDBModel cacheDBModel=new APICacheDBModel(
+            key:"USER_API",
+            syncData:res.body
+          );
+          await APICacheManager().addCacheData(cacheDBModel);
           setState(() {
             _posts = resBody['results'];
           });
-          // return userDetailResponseFromJson(json.decode(res.body));
+          return userDetailResponseFromJson(res.body);
         }else{
-          // return null;
+          return null;
         }
-
 
       } catch (err) {
         if (kDebugMode) {
@@ -73,19 +72,21 @@ class _HomePageState extends State<HomePage> {
         }
       }
 
+
+    }else{
+      print("Cache data");
+
+      var cachedata=await APICacheManager().getCacheData("USER_API");
       setState(() {
         _isFirstLoadRunning = false;
       });
-    // }else{
-      // print("Cache data");
-      //
-      // var cachedata=await APICacheManager().getCacheData("USER_API");
-      // // _posts = cachedata.syncData as List;
-      // return userDetailResponseFromJson(cachedata.syncData);
+      return userDetailResponseFromJson(cachedata.syncData);
 
-    // }
+
+    }
 
   }
+
 
 
   void _loadMore() async {
@@ -102,6 +103,12 @@ class _HomePageState extends State<HomePage> {
         await http.get(Uri.parse("$_baseuserUrl?_page=$_page&results=$_limit"));
         print("$_baseuserUrl?_page=$_page&results=$_limit");
         var resBody = json.decode(res.body);
+
+        if(res.statusCode==200){
+          UserDetailResponse userDetailResponse= userDetailResponseFromJson(res.body);
+          results!.addAll(userDetailResponse.results!);
+        }
+
 
         final List fetchedPosts =  resBody['results'];
         if (fetchedPosts.isNotEmpty) {
@@ -127,18 +134,28 @@ class _HomePageState extends State<HomePage> {
   }
 
 
-  late ScrollController _controller;
 
   @override
   void initState() {
     super.initState();
-    _firstLoad();
-    _controller = ScrollController()..addListener(_loadMore);
+    _firstLoad().then((value) {
+      setState(() {
+        setState(() {
+          _isFirstLoadRunning = false;
+        });
+        if(value!=null){
+          results=value.results;
+          print(results![0].email);
+        }
+
+      });
+
+    });
+    scrollController = ScrollController()..addListener(_loadMore);
     setState(() {
       deviceToken=PushNotificationManager.notificationToken.toString();
     });
     print("Firebase token ${PushNotificationManager.notificationToken}");
-    // getdevicetokentosendnotification();
   }
 
   @override
@@ -147,12 +164,7 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
 
-  Future<void> getdevicetokentosendnotification() async{
-      final FirebaseMessaging firebaseMessaging=FirebaseMessaging.instance;
-    token=(await firebaseMessaging.getToken())!;
-      deviceToken=token.toString();
-    print(token);
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -184,11 +196,7 @@ class _HomePageState extends State<HomePage> {
                   height: 30,
                   width: 120,
                   color:subscribe ? Colors.grey : Colors.red,
-                  // decoration: BoxDecoration(
-                  //   color: Colors.red
-                  // ),
                     margin: const EdgeInsets.only(right: 8.0),
-                    // padding: const EdgeInsets.only(right: 8.0),
                     child: Text(subscribe ? "Unsubscribe" :"Subscribe",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),)
                 )
             ),
@@ -196,51 +204,50 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: _isFirstLoadRunning
-          ? const Center(
-             child: const CircularProgressIndicator(),
+          ?  Center(
+             child:  CircularProgressIndicator(),
         )
-          : Column(
-          children: [
+          : _getuserdetail()
+    );
+  }
 
-            // GestureDetector(
-            //   onTap: ()async{
-            //     List<Map<String,dynamic>> list = await APICacheDBHelper.query(APICacheDBModel.table);
-            //   },
-            //     child: Text("click")
-            // ),
-          Expanded(
-            child: ListView.builder(
-              controller: _controller,
-              itemCount: _posts.length,
-              itemBuilder: (_, index) => GestureDetector(
-                onTap: (){
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (_) =>
-                            UserDetailScreen(posts: _posts[index],))
-                    );
-                },
-                child: Card(
-                  margin: const EdgeInsets.symmetric(
-                      vertical: 10, horizontal: 20),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(_posts[index]['login']['username'],style: TextStyle(fontWeight:FontWeight.bold,fontSize: 20),),
-                        Text(_posts[index]['name']['title']+". "+_posts[index]['name']['first'],style: TextStyle(fontSize: 20),),
-                        Text(_posts[index]['location']['city'],style: TextStyle(fontSize: 20),),
-                        Text(_posts[index]['email'],style: TextStyle(fontSize: 20),),
-                      ],
-                    ),
+
+  _getuserdetail(){
+    return SingleChildScrollView(
+      controller: scrollController,
+      child:results!.length==0 ? Container() : Column(
+        children: [
+          ListView.builder(
+            controller: _controller,
+            shrinkWrap: true,
+            itemCount: results!.length,
+            itemBuilder: (context, index) => GestureDetector(
+              onTap: (){
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (_) =>
+                        UserDetailScreen(results: results![index],))
+                );
+              },
+              child: Card(
+                margin: const EdgeInsets.symmetric(
+                    vertical: 10, horizontal: 20),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(results![index].login!.username!,style: TextStyle(fontWeight:FontWeight.bold,fontSize: 20),),
+                      Text(results![index].name!.title!+". "+results![index].name!.title!,style: TextStyle(fontSize: 20),),
+                      Text(results![index].location!.city!,style: TextStyle(fontSize: 20),),
+                      Text(results![index].email!,style: TextStyle(fontSize: 20),),
+
+                    ],
                   ),
                 ),
               ),
             ),
           ),
-
-          // when the _loadMore function is running
           if (_isLoadMoreRunning == true)
             const Padding(
               padding: EdgeInsets.only(top: 10, bottom: 40),
@@ -248,21 +255,10 @@ class _HomePageState extends State<HomePage> {
                 child: CircularProgressIndicator(),
               ),
             ),
-
-          // When nothing else to load
-          if (_hasNextPage == false)
-            Container(
-              padding: const EdgeInsets.only(top: 30, bottom: 40),
-              color: Colors.amber,
-              child: const Center(
-                child: Text('You have fetched all of the content'),
-              ),
-            ),
-
-
         ],
       ),
     );
+
   }
 
   void fcmSubscribe() async{

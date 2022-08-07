@@ -1,11 +1,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.apptware_task_project">
+    package="com.example.apptware_task_project"
+  >
+
     <uses-permission android:name="android.permission.INTERNET"/>
+
 
     <application
         android:label="apptware_task_project"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:requestLegacyExternalStorage="true"
+        android:usesCleartextTraffic="true">
         <activity
             android:name=".MainActivity"
             android:usesCleartextTraffic="true"

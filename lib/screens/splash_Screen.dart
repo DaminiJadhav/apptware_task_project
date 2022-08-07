@@ -39,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
               children: [
                 Lottie.network(
                     'https://assets7.lottiefiles.com/private_files/lf30_obidsi0t.json'
-                    /*'https://assets1.lottiefiles.com/private_files/lf30_xeb8piyr.json'*/,width: 300,height: 300),
+                   ,width: 300,height: 300),
               ],
             ),
           ],

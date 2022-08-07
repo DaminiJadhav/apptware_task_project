@@ -6,7 +6,6 @@ import 'package:apptware_task_project/screens/splash_Screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:cloud_functions/cloud_functions.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +24,7 @@ void main() async {
     );
   }
   FirebaseMessaging.onBackgroundMessage(_messageHandler);
-  FirebaseFunctions.instance.useFunctionsEmulator('localhost', 5001);
+  // FirebaseFunctions.instance.useFunctionsEmulator('localhost', 5001);
   // FirebaseFunctions.instanceFor(region: 'europe-west1')
   //     .useFunctionsEmulator('localhost', 5001);
   runApp(const MyApp());
@@ -66,8 +65,5 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-// "to":"/topics/connectTopic",
+// https://github.com/DaminiJadhav/apptware_task_project
 
-// "registration_ids":[
-// deviceToken
-// ],

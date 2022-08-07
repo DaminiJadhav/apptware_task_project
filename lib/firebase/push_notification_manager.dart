@@ -11,7 +11,6 @@ class PushNotificationManager{
   static String? get  notificationToken => _token;
   static String? _token;
 
-  // FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   static bool _initialized=false;
   static late String token,newToken;
   static late String refeshtoken;
@@ -41,8 +40,6 @@ class PushNotificationManager{
 
     }
 
-    //gives you the message on which user tags
-    //and it opened the app from terminated state
     FirebaseMessaging.instance.getInitialMessage().then((message) {
       if(message!=null){
         print(message.data['route']);
@@ -63,14 +60,8 @@ class PushNotificationManager{
 
     });
 
-    //when the app is in background but  opened and user tab
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      // if(Platform.isIOS){
-      // message=modifynotification(message) as RemoteMessage;
-      //}
       print(message.data['route']);
-      // Navigator.pushReplacement(context,
-      //     MaterialPageRoute(builder: (context) => EventScreen()));
     });
 
 
