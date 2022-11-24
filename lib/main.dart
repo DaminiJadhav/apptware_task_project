@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:apptware_task_project/firebase/local_notification_Service.dart';
+import 'package:apptware_task_project/screens/firestore_database/user_task_screen.dart';
 import 'package:apptware_task_project/screens/home_page_screen.dart';
 import 'package:apptware_task_project/screens/splash_Screen.dart';
 import 'package:flutter/material.dart';
@@ -60,7 +61,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home:  SplashScreen(),
+      home:  MyFirebaseDemo(),
     );
   }
 }
