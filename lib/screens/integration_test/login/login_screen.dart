@@ -57,6 +57,7 @@ class LoginScreen extends StatelessWidget {
               validator: (value){
                 // Validators.validateEmail(usernamecontroller.text,10);
               },
+
             ),
             Padding(
               padding: const EdgeInsets.only(top: 8.0,bottom: 8.0),
