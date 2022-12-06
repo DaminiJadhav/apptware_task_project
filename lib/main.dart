@@ -3,12 +3,18 @@ import 'dart:io';
 import 'package:apptware_task_project/firebase/local_notification_Service.dart';
 import 'package:apptware_task_project/screens/firestore_database/user_task_screen.dart';
 import 'package:apptware_task_project/screens/home_page_screen.dart';
+import 'package:apptware_task_project/screens/integration_test/login/splash_screens.dart';
 import 'package:apptware_task_project/screens/splash_Screen.dart';
+import 'package:apptware_task_project/screens/test/text_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
+
+
+
 void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
@@ -61,7 +67,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home:  MyFirebaseDemo(),
+      home:  TextScreen(),
     );
   }
 }
@@ -73,3 +79,4 @@ class _MyAppState extends State<MyApp> {
 // - Make use of FCM with topics
 // - Animated splash screen (any)
 // - Application must work offline
+
