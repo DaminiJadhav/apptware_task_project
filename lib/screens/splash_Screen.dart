@@ -31,19 +31,21 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Stack(
-          alignment: Alignment.bottomCenter,
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Lottie.network(
-                    'https://assets7.lottiefiles.com/private_files/lf30_obidsi0t.json'
-                   ,width: 300,height: 300),
-              ],
-            ),
-          ],
-        ),
+        child: Image.asset("assets/professional_img.jpg",height: MediaQuery.of(context).size.height,fit: BoxFit.cover,),
+
+        // child: Stack(
+        //   alignment: Alignment.bottomCenter,
+        //   children: [
+        //     Column(
+        //       mainAxisAlignment: MainAxisAlignment.center,
+        //       children: [
+        //         Lottie.network(
+        //             'https://assets7.lottiefiles.com/private_files/lf30_obidsi0t.json'
+        //            ,width: 300,height: 300),
+        //       ],
+        //     ),
+        //   ],
+        // ),
       ),
     );
   }

@@ -55,6 +55,7 @@ dev_dependencies:
   api_cache_manager: ^1.0.2
   cloud_firestore: ^4.1.0
   firebase_auth: ^4.1.0
+  firebase_crashlytics: ^3.0.6
 
 
 
