@@ -24,28 +24,28 @@ void main() async {
   await Firebase.initializeApp();
 
   // FirebaseCrashlytics.instance.crash();
-  // if(Platform.isAndroid){
-  //   await Firebase.initializeApp();
-  // }else{
-  //   await Firebase.initializeApp(
-  //       options: FirebaseOptions(
-  //           apiKey: "AIzaSyAj8rEZUM6ldRS-7AGKVZ-T3HuQ3ESR3KE",
-  //           appId: "1:626750469255:android:27ab68cea9c2cc40dff422",
-  //           messagingSenderId: "626750469255",
-  //           projectId: "apptwaretaskproject"
-  //       )
-  //   );
-  // }
-  // FirebaseMessaging.onBackgroundMessage(_messageHandler);
-  //
-  // FlutterError.onError = (errorDetails) {
-  //   FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
-  // };
-  // // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
-  // PlatformDispatcher.instance.onError = (error, stack) {
-  //   FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-  //   return true;
-  // };
+  if(Platform.isAndroid){
+    await Firebase.initializeApp();
+  }else{
+    await Firebase.initializeApp(
+        options: FirebaseOptions(
+            apiKey: "AIzaSyAj8rEZUM6ldRS-7AGKVZ-T3HuQ3ESR3KE",
+            appId: "1:626750469255:android:27ab68cea9c2cc40dff422",
+            messagingSenderId: "626750469255",
+            projectId: "apptwaretaskproject"
+        )
+    );
+  }
+  FirebaseMessaging.onBackgroundMessage(_messageHandler);
+
+  FlutterError.onError = (errorDetails) {
+    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+  };
+  // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
   runApp(MyApp());
 
 
@@ -81,7 +81,10 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home:  FirebaseCrashlyticDemo(),
+      // home:  FirebaseCrashlyticDemo(),
+        home:  SplashScreens(),
+
+
     );
   }
 }
@@ -167,5 +170,8 @@ class _MyAppState extends State<MyApp> {
 
 
 // fvm flutter build apk --analyze-size --target-platform=android-arm64
+
+// firebase token
+// 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
 
 
