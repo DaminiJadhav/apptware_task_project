@@ -106,7 +106,7 @@ class HomeScreen extends StatelessWidget {
         title: Text("Dashboard"),
       ),
       body: Center(
-        child: Text("MainScreen"),
+        child: Text("MainScreen Home"),
       ),
     );
   }

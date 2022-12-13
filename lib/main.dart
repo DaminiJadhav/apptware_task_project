@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:apptware_task_project/firebase/local_notification_Service.dart';
 import 'package:apptware_task_project/screens/firebase_crashlytic_demo.dart';
 import 'package:apptware_task_project/screens/integration_test/login/splash_screens.dart';
+import 'package:apptware_task_project/screens/integration_test/search_default_screen.dart';
 import 'package:apptware_task_project/screens/splash_Screen.dart';
 import 'package:apptware_task_project/screens/test/text_screen.dart';
 import 'package:flutter/foundation.dart';
@@ -82,7 +83,7 @@ class _MyAppState extends State<MyApp> {
         primarySwatch: Colors.blue,
       ),
       // home:  FirebaseCrashlyticDemo(),
-        home:  SplashScreens(),
+        home:  SearchDefaultScreen(title: 'search',),
 
 
     );
@@ -174,4 +175,10 @@ class _MyAppState extends State<MyApp> {
 // firebase token
 // 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
 
+
+
+// dell
+
+
+//hp
 
