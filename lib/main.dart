@@ -2,10 +2,11 @@ import 'dart:async';
 import 'dart:io';
 import 'package:apptware_task_project/firebase/local_notification_Service.dart';
 import 'package:apptware_task_project/screens/firebase_crashlytic_demo.dart';
+import 'package:apptware_task_project/screens/integration_test/login/login_screen.dart';
 import 'package:apptware_task_project/screens/integration_test/login/splash_screens.dart';
 import 'package:apptware_task_project/screens/integration_test/search_default_screen.dart';
 import 'package:apptware_task_project/screens/splash_Screen.dart';
-import 'package:apptware_task_project/screens/test/text_screen.dart';
+import 'package:apptware_task_project/screens/testing/new/reverse_string_unit_testing.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -83,7 +84,8 @@ class _MyAppState extends State<MyApp> {
         primarySwatch: Colors.blue,
       ),
       // home:  FirebaseCrashlyticDemo(),
-        home:  SearchDefaultScreen(title: 'search',),
+      //   home:  SearchDefaultScreen(title: 'search',),
+      home:  LoginScreen(),
 
 
     );

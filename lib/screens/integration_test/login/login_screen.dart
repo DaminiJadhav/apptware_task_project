@@ -75,12 +75,7 @@ class LoginScreen extends StatelessWidget {
             ),
             TextButton(
               onPressed: (){
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder:
-                        (context) =>
-                        HomeScreen()
-                    )
-                );
+                login(context);
               },
               child: Text("Go"),
             ),
@@ -90,6 +85,34 @@ class LoginScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  login(BuildContext context){
+    if(usernamecontroller.text=='username' && passcontroller.text=="password"){
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder:
+              (context) =>
+              HomeScreen()
+          )
+      );
+    }else{
+      showDialog(
+          context: context,
+          builder: (BuildContext context){
+            return AlertDialog(
+              title: Text("Error"),
+              content: Text("Invalid username & password"),
+              actions: [
+                TextButton(
+                    onPressed: (){
+                      Navigator.pop(context);
+                    },
+                    child: Text("Ok"))
+              ],
+            );
+          }
+      );
+    }
   }
 }
 
