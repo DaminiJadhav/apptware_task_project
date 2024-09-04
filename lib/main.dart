@@ -174,13 +174,3 @@ class _MyAppState extends State<MyApp> {
 
 // fvm flutter build apk --analyze-size --target-platform=android-arm64
 
-// firebase token
-// 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
-
-
-
-// dell
-
-
-//hp
-
