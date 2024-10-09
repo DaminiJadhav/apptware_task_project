@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:apptware_task_project/firebase/local_notification_Service.dart';
+import 'package:apptware_task_project/screens/dataTable/CustomDataTable.dart';
+import 'package:apptware_task_project/screens/dataTable/CustomPaginatedDataTableExample.dart';
+import 'package:apptware_task_project/screens/dataTable/DataTableExample.dart';
 import 'package:apptware_task_project/screens/firebase_crashlytic_demo.dart';
 import 'package:apptware_task_project/screens/integration_test/login/login_screen.dart';
 import 'package:apptware_task_project/screens/integration_test/login/splash_screens.dart';
@@ -85,7 +88,7 @@ class _MyAppState extends State<MyApp> {
       ),
       // home:  FirebaseCrashlyticDemo(),
       //   home:  SearchDefaultScreen(title: 'search',),
-      home:  LoginScreen(),
+      home:  CustomPaginationTable(),
 
 
     );
